@@ -28,6 +28,7 @@
 		F87D58242C246D02006343E2 /* DogBreed.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87D58232C246D02006343E2 /* DogBreed.swift */; };
 		F87D58262C246D23006343E2 /* DogImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87D58252C246D23006343E2 /* DogImage.swift */; };
 		F87D58282C246D66006343E2 /* ApiResponses.swift in Sources */ = {isa = PBXBuildFile; fileRef = F87D58272C246D66006343E2 /* ApiResponses.swift */; };
+		F8C95B2C2C298A5D0095C6E0 /* DogBreedCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8C95B2B2C298A5D0095C6E0 /* DogBreedCollectionCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -73,6 +74,7 @@
 		F87D58232C246D02006343E2 /* DogBreed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DogBreed.swift; sourceTree = "<group>"; };
 		F87D58252C246D23006343E2 /* DogImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DogImage.swift; sourceTree = "<group>"; };
 		F87D58272C246D66006343E2 /* ApiResponses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiResponses.swift; sourceTree = "<group>"; };
+		F8C95B2B2C298A5D0095C6E0 /* DogBreedCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DogBreedCollectionCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -190,6 +192,7 @@
 				F87D580F2C246AB5006343E2 /* DogBreedImagesViewController.swift */,
 				F87D58112C246AE3006343E2 /* FavoriteImagesViewController.swift */,
 				F87D58132C246B61006343E2 /* DogImageCell.swift */,
+				F8C95B2B2C298A5D0095C6E0 /* DogBreedCollectionCell.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -357,6 +360,7 @@
 				F87D57D92C2463BD006343E2 /* SceneDelegate.swift in Sources */,
 				F87D58182C246BD1006343E2 /* LikedImagesStorage.swift in Sources */,
 				F87D58242C246D02006343E2 /* DogBreed.swift in Sources */,
+				F8C95B2C2C298A5D0095C6E0 /* DogBreedCollectionCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

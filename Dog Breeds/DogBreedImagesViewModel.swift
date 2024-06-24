@@ -12,7 +12,13 @@ class DogBreedImagesViewModel {
     var breed: String
     var images: [String] = []
     var likedImages: [DogImage] = []
-    var onImagesUpdated: (() -> Void)?
+    var isLoading = false{
+        didSet{
+            self.onImagesUpdated?(isLoading)
+        }
+    }
+    var onImagesUpdated: ((Bool) -> Void)?
+    var onError: ((Error) -> Void)?
     
     init(breed: String, apiService: DogAPIService = DogAPIService()) {
         self.breed = breed
@@ -21,17 +27,19 @@ class DogBreedImagesViewModel {
     }
     
     func fetchImages() {
+        isLoading = true
         apiService.fetchImages(for: breed) { [weak self] result in
+            self?.isLoading = false
             switch result {
             case .success(let images):
                 self?.images = images
-                self?.onImagesUpdated?()
             case .failure(let error):
                 print("Error fetching images: \(error)")
+                self?.onError?(error)
             }
         }
     }
-    
+    //Get all images with liked or unliked features and show the like and unlike icon as per favorites image
     func toggleLikeImage(_ url: String) {
         if let index = likedImages.firstIndex(where: { $0.url == url }) {
             likedImages.remove(at: index)
@@ -39,11 +47,11 @@ class DogBreedImagesViewModel {
             let likedImage = DogImage(url: url, breed: breed)
             likedImages.append(likedImage)
         }
-        // Save liked images
-        LikedImagesStorage.save(likedImages)
+        // Save liked images in user default
+        LikedImagesStorage.saveDogImage(likedImages)
     }
-    
+    //Get all Liked dog images
     func loadLikedImages() {
-        likedImages = LikedImagesStorage.load()
+        likedImages = LikedImagesStorage.getDogImage()
     }
 }

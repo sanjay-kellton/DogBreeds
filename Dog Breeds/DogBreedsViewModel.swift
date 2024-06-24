@@ -10,20 +10,30 @@ import Foundation
 class DogBreedsViewModel {
     private let apiService: DogAPIService
     var breeds: [String] = []
-    var onBreedsUpdated: (() -> Void)?
+    var isLoading = false{
+        didSet{
+            self.onBreedsUpdated?(isLoading)
+        }
+    }
+    
+    var onBreedsUpdated: ((Bool) -> Void)?
+    var onError: ((Error) -> Void)?
     
     init(apiService: DogAPIService = DogAPIService()) {
         self.apiService = apiService
     }
     
     func fetchBreeds() {
+        isLoading = true
         apiService.fetchBreeds { [weak self] result in
+            self?.isLoading = false
             switch result {
             case .success(let breeds):
                 self?.breeds = breeds
-                self?.onBreedsUpdated?()
+                
             case .failure(let error):
                 print("Error fetching breeds: \(error)")
+                self?.onError?(error)
             }
         }
     }

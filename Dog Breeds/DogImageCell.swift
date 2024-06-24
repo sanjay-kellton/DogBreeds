@@ -12,9 +12,9 @@ class DogImageCell: UICollectionViewCell {
     var imageView: UIImageView!
     var likeButton: UIButton!
     var likeButtonAction: (() -> Void)?
-    var showLikeButton: Bool = true {
+    var isUserInteration: Bool = false {
             didSet {
-                likeButton.isHidden = !showLikeButton
+                likeButton.isUserInteractionEnabled = !isUserInteration
             }
         }
     override init(frame: CGRect) {
@@ -32,7 +32,6 @@ class DogImageCell: UICollectionViewCell {
         likeButton.translatesAutoresizingMaskIntoConstraints = false
         likeButton.addTarget(self, action: #selector(didTapLikeButton), for: .touchUpInside)
         contentView.addSubview(likeButton)
-        likeButton.isHidden = !showLikeButton
         // Set constraints for imageView
         NSLayoutConstraint.activate([
             imageView.topAnchor.constraint(equalTo: contentView.topAnchor),

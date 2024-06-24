@@ -17,7 +17,7 @@ class FavoriteImagesViewModel {
     }
     
     func loadLikedImages() {
-        likedImages = LikedImagesStorage.load()
+        likedImages = LikedImagesStorage.getDogImage()
         filteredImages = likedImages
         onImagesUpdated?()
     }

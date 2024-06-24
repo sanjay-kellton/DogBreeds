@@ -9,12 +9,29 @@ import UIKit
 
 class FavoriteImagesViewController: UICollectionViewController {
     private var viewModel: FavoriteImagesViewModel
-    
+    private var noDataLabel: UILabel = {
+            let label = UILabel()
+            label.text = "No data available"
+            label.textAlignment = .center
+            label.textColor = .gray
+            label.isHidden = true // Initially hidden
+            return label
+        }()
     init() {
            self.viewModel = FavoriteImagesViewModel()
-           let layout = UICollectionViewFlowLayout()
-           layout.itemSize = CGSize(width: 100, height: 100) // Adjust item size as needed
-           super.init(collectionViewLayout: layout)
+        let layout = UICollectionViewFlowLayout()
+        layout.sectionInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10) // Adjust margin values here
+        layout.minimumInteritemSpacing = 10
+        layout.minimumLineSpacing = 10
+        
+        super.init(collectionViewLayout: layout)
+        
+        // Calculate item size based on device dimensions
+        let screenWidth = UIScreen.main.bounds.width
+        let itemWidth = (screenWidth - layout.sectionInset.left - layout.sectionInset.right - layout.minimumInteritemSpacing * 2) / 3 // Adjust number of items per row as needed
+        let itemHeight = itemWidth // Square items, adjust height as needed
+        
+        layout.itemSize = CGSize(width: itemWidth, height: itemHeight)
        }
     
     required init?(coder: NSCoder) {
@@ -23,7 +40,7 @@ class FavoriteImagesViewController: UICollectionViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Favorite Images"
+        title = "Favorite pictures"
         collectionView.register(DogImageCell.self, forCellWithReuseIdentifier: "FavoriteImageCell")
         viewModel.onImagesUpdated = { [weak self] in
             DispatchQueue.main.async {
@@ -32,11 +49,17 @@ class FavoriteImagesViewController: UICollectionViewController {
         }
         viewModel.loadLikedImages()
         setupNavigationBar()
+        setupNoDataLabel()
     }
     
     private func setupNavigationBar() {
-        let filterButton = UIBarButtonItem(title: "Filter", style: .plain, target: self, action: #selector(filterButtonTapped))
-        navigationItem.rightBarButtonItem = filterButton
+        
+        let filterButton = UIBarButtonItem(title: "Filter by breed", style: .plain, target: self, action: #selector(filterButtonTapped))
+        
+        if viewModel.likedImages.count > 0{
+            navigationItem.rightBarButtonItem = filterButton
+        }
+       
     }
     
     @objc private func filterButtonTapped() {
@@ -69,11 +92,29 @@ class FavoriteImagesViewController: UICollectionViewController {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FavoriteImageCell", for: indexPath) as! DogImageCell
         let dogImage = viewModel.filteredImages[indexPath.row]
         cell.imageView.loadImage(from: dogImage.url)
-        cell.showLikeButton = false
+        cell.isUserInteration = false
+        cell.likeButton.isSelected = true
         return cell
     }
     
     func filterImages(by breed: String) {
         viewModel.filterImages(by: breed)
+    }
+    
+    private func setupNoDataLabel() {
+        view.addSubview(noDataLabel)
+        noDataLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            noDataLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            noDataLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+        ])
+    }
+    
+    private func updateNoDataLabel() {
+        if viewModel.likedImages.isEmpty {
+            noDataLabel.isHidden = false
+        } else {
+            noDataLabel.isHidden = true
+        }
     }
 }
